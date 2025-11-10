@@ -1,103 +1,94 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>تقسيم ملف PDF | Free PDF Tools</title>
-<meta name="description" content="قسّم ملف PDF إلى عدة ملفات أو استخرج نطاق صفحات داخل المتصفح." />
-<link rel="stylesheet" href="../assets/style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تقسيم ملف PDF | PDF Studio</title>
+
+<style>
+  body{margin:0;background:#f7f8fb;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#0f172a;}
+  .container{max-width:750px;margin:60px auto;padding:20px;background:#fff;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.07);}
+  h1{text-align:center;margin-bottom:6px;font-size:28px;}
+  p{text-align:center;color:#6b7280;margin-bottom:30px;}
+  input[type="file"]{display:block;margin:0 auto 18px;padding:14px;border-radius:12px;border:2px dashed #9ca3af;background:#fff;cursor:pointer;width:100%;}
+  .row{display:flex;gap:12px;margin-top:14px;justify-content:center;}
+  button{
+    background:#e53935;color:#fff;border:none;padding:14px 22px;font-size:16px;
+    border-radius:12px;cursor:pointer;transition:.25s;
+  }
+  button:hover{background:#c62828;}
+  #pagesCount{text-align:center;margin:12px 0;color:#374151;font-weight:bold;}
+  .back{display:block;text-align:center;margin-top:22px;color:#2563eb;text-decoration:none;}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
+
 </head>
 <body>
-  <main class="container">
-    <a href="../index.html" target="_blank" rel="noopener">↗ الصفحة الرئيسية (تبويب جديد)</a>
-    <article class="card" style="margin-top:12px">
-      <h1>تقسيم ملف PDF</h1>
-      <p class="muted">اختر ملف PDF، ثم اختر وضع التقسيم.</p>
 
-      <div class="card">
-        <label class="btn" for="file-input">اختيار ملف</label>
-        <input type="file" id="file-input" accept="application/pdf" hidden>
-        <div id="info" class="muted" style="margin-top:8px">لم يتم اختيار ملف</div>
+<div class="container">
+  <h1>تقسيم ملف PDF</h1>
+  <p>اختر ملف PDF ثم قم بتقسيمه إلى صفحات منفصلة أو مجموعات صفحات.</p>
 
-        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px">
-          <button id="split-each" class="btn" disabled>تقسيم إلى ملفات صفحات منفصلة</button>
-          <button id="extract-range" class="btn" disabled>استخراج نطاق صفحات</button>
-        </div>
+  <input type="file" id="pdfFile" accept="application/pdf">
 
-        <div style="margin-top:10px" id="range-wrap" hidden>
-          <label>من صفحة: <input id="from" type="number" min="1" style="width:80px" /></label>
-          <label>إلى صفحة: <input id="to" type="number" min="1" style="width:80px" /></label>
-          <button id="do-range" class="btn">تنزيل</button>
-        </div>
+  <div id="pagesCount"></div>
 
-        <div id="results" style="margin-top:12px"></div>
-      </div>
-    </article>
-  </main>
+  <div class="row">
+    <button onclick="splitPages()">تقسيم إلى صفحات منفصلة</button>
+    <button onclick="extractRange()">استخراج نطاق محدد</button>
+  </div>
 
-<script type="module">
-import { PDFDocument } from "https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.esm.js";
-const input = document.getElementById('file-input');
-const info = document.getElementById('info');
-const splitEach = document.getElementById('split-each');
-const extractRange = document.getElementById('extract-range');
-const rangeWrap = document.getElementById('range-wrap');
-const doRange = document.getElementById('do-range');
-const results = document.getElementById('results');
-const from = document.getElementById('from');
-const to = document.getElementById('to');
+  <a href="../index.html" class="back">العودة للصفحة الرئيسية</a>
+</div>
 
-let bytes, pdf, pageCount = 0;
-input.addEventListener('change', async () => {
-  const f = input.files[0];
-  if(!f){ return; }
-  bytes = await f.arrayBuffer();
-  pdf = await PDFDocument.load(bytes);
-  pageCount = pdf.getPageCount();
-  info.textContent = `الملف: ${f.name} — عدد الصفحات: ${pageCount}`;
-  splitEach.disabled = false; extractRange.disabled = false;
+<script>
+let pdfDoc, totalPages;
+
+document.getElementById("pdfFile").addEventListener("change", async (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const bytes = await file.arrayBuffer();
+  pdfDoc = await PDFLib.PDFDocument.load(bytes);
+  totalPages = pdfDoc.getPageCount();
+  document.getElementById("pagesCount").innerHTML = "عدد الصفحات: " + totalPages;
 });
 
-splitEach.addEventListener('click', async () => {
-  if(!pdf) return;
-  results.innerHTML = '';
-  for(let i=0;i<pageCount;i++){
-    const out = await PDFDocument.create();
-    const [page] = await out.copyPages(pdf, [i]);
-    out.addPage(page);
-    const b = await out.save();
-    downloadBlob(b, `page-${i+1}.pdf`);
+async function splitPages(){
+  if(!pdfDoc) return alert("الرجاء اختيار ملف أولاً");
+  for(let i=0;i<totalPages;i++){
+    const newPdf = await PDFLib.PDFDocument.create();
+    const [page] = await newPdf.copyPages(pdfDoc,[i]);
+    newPdf.addPage(page);
+    const pdfBytes = await newPdf.save();
+    download(pdfBytes,`page-${i+1}.pdf`);
   }
-});
+}
 
-extractRange.addEventListener('click', () => {
-  rangeWrap.hidden = false;
-  from.max = pageCount; to.max = pageCount;
-  from.value = 1; to.value = pageCount;
-});
+async function extractRange(){
+  if(!pdfDoc) return alert("الرجاء اختيار ملف أولاً");
+  let range = prompt("أدخل نطاق الصفحات مثل: 1-3");
+  if(!range) return;
+  let parts = range.split("-");
+  let start = parseInt(parts[0])-1;
+  let end = parseInt(parts[1])-1;
+  if(start<0 || end>=totalPages) return alert("نطاق غير صحيح");
 
-doRange.addEventListener('click', async () => {
-  const a = Math.max(1, parseInt(from.value||'1',10));
-  const b = Math.min(pageCount, parseInt(to.value||String(pageCount),10));
-  if(a>b) return;
-  const out = await PDFDocument.create();
-  const idx = [];
-  for(let i=a-1;i<b;i++) idx.push(i);
-  const pages = await out.copyPages(pdf, idx);
-  pages.forEach(p => out.addPage(p));
-  const bytes = await out.save();
-  downloadBlob(bytes, `pages-${a}-{b}.pdf`.replace('{b}', b));
-});
+  const newPdf = await PDFLib.PDFDocument.create();
+  const pages = await newPdf.copyPages(pdfDoc, [...Array(end-start+1).keys()].map(i=>i+start));
+  pages.forEach(p=>newPdf.addPage(p));
+  const pdfBytes = await newPdf.save();
+  download(pdfBytes,`pages-${start+1}-${end+1}.pdf`);
+}
 
-function downloadBlob(arr, name){
-  const blob = new Blob([arr], { type: 'application/pdf' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = name;
-  a.textContent = `تنزيل ${name}`;
-  a.style.display = 'block';
-  results.appendChild(a);
+function download(bytes,filename){
+  const blob=new Blob([bytes],{type:"application/pdf"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download=filename;a.click();
+  URL.revokeObjectURL(url);
 }
 </script>
+
 </body>
 </html>
