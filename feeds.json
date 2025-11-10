@@ -1,0 +1,17 @@
+[
+  {
+    "name": "BBC Arabic - Middle East",
+    "url": "http://feeds.bbci.co.uk/arabic/middleeast/rss.xml",
+    "lang": "ar"
+  },
+  {
+    "name": "BBC News - World",
+    "url": "http://feeds.bbci.co.uk/news/world/rss.xml",
+    "lang": "en"
+  },
+  {
+    "name": "The Verge",
+    "url": "https://www.theverge.com/rss/index.xml",
+    "lang": "en"
+  }
+]

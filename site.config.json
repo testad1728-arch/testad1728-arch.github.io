@@ -1,0 +1,11 @@
+{
+  "site_name_ar": "مدونة تلقائية",
+  "site_name_en": "Auto Blog",
+  "site_url": "https://<your-username>.github.io/<repo-name>/",
+  "site_description_ar": "موقع محتوى آلي يحدّث نفسه من مصادر مفتوحة مع تلخيصات قصيرة وروابط للمصدر.",
+  "site_description_en": "Automated content site that refreshes itself from open sources with short summaries and source links.",
+  "adsense_publisher_id": "ca-pub-XXXXXXXXXXXXXXXX",
+  "language_default": "ar",
+  "theme_color": "#0f172a",
+  "accent_color": "#16a34a"
+}

@@ -1,0 +1,11 @@
+[
+  {
+    "title_ar": "مثال: أول تدوينة",
+    "title_en": "Example: First Post",
+    "summary_ar": "تدوينة تجريبية توضح شكل المحتوى.",
+    "summary_en": "A demo post showing the content shape.",
+    "path": "posts/welcome.html",
+    "date": "2025-11-10",
+    "lang": "AR/EN"
+  }
+]
