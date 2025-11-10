@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8" />
+<title>دمج ملفات PDF</title>
+<meta name="description" content="دمج عدة ملفات PDF في ملف واحد بسهولة وبدون برامج." />
+<style>
+body {font-family: sans-serif; background: #f3f4f6; margin:0; padding:0; display:flex; justify-content:center; align-items:center; min-height:100vh;}
+.container {background:#fff; padding:30px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.08); text-align:center; width:90%; max-width:600px;}
+.drop-zone {border:2px dashed #888; padding:40px; border-radius:10px; cursor:pointer; transition:.3s;}
+.drop-zone:hover {border-color:#16a34a;}
+button {background:#16a34a; color:white; border:none; padding:12px 25px; font-size:16px; border-radius:8px; cursor:pointer; margin-top:20px;}
+button:disabled {background:#ccc; cursor:not-allowed;}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h2>دمج ملفات PDF</h2>
+
+<div class="drop-zone" id="drop-zone">
+اسحب ملفات PDF هنا أو اضغط للرفع
+<input type="file" id="file-input" accept="application/pdf" multiple hidden>
+</div>
+
+<button id="merge-btn" disabled>دمج الملفات</button>
+<a id="download-link" style="display:none; margin-top:20px; display:block;">تحميل الملف النهائي</a>
+</div>
+
+<script>
+const dropZone = document.getElementById("drop-zone");
+const fileInput = document.getElementById("file-input");
+let files = [];
+dropZone.onclick = ()=> fileInput.click();
+dropZone.ondragover = e =>{e.preventDefault(); dropZone.style.borderColor="#16a34a";}
+dropZone.ondragleave = ()=> dropZone.style.borderColor="#888";
+dropZone.ondrop = e =>{
+e.preventDefault();
+files = [...e.dataTransfer.files];
+dropZone.style.borderColor="#888";
+checkFiles();
+}
+fileInput.onchange = ()=>{files=[...fileInput.files]; checkFiles();}
+function checkFiles(){ document.getElementById("merge-btn").disabled = files.length<2; }
+
+document.getElementById("merge-btn").onclick = async ()=>{
+const { PDFDocument } = await import("https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.esm.js");
+const mergedPdf = await PDFDocument.create();
+for(const file of files){
+const bytes = await file.arrayBuffer();
+const pdf = await PDFDocument.load(bytes);
+const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+copiedPages.forEach(page => mergedPdf.addPage(page));
+}
+const mergedBytes = await mergedPdf.save();
+const blob = new Blob([mergedBytes], { type:"application/pdf" });
+const url = URL.createObjectURL(blob);
+const link = document.getElementById("download-link");
+link.href = url;
+link.download = "merged.pdf";
+link.style.display="block";
+link.innerText="تحميل الملف النهائي";
+};
+</script>
+
+</body>
+</html>
