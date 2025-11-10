@@ -1,79 +1,136 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>أدوات PDF مجانية</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="assets/style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أدوات PDF مجانية</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+body {
+  margin:0; padding:0;
+  background:#0c0f14;
+  font-family: 'Tahoma', sans-serif;
+  color:white;
+}
+.header {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:25px 40px;
+}
+.title {
+  font-size:28px; font-weight:700;
+}
+.lang-btn {
+  background:rgba(255,255,255,.12);
+  border:none; color:white;
+  padding:8px 18px; border-radius:6px;
+  cursor:pointer; transition:.2s;
+}
+.lang-btn:hover { background:rgba(255,255,255,.25); }
 
-  <style>
-    body { background:#0f172a; color:white; font-family:"Tajawal", sans-serif; margin:0; padding:0; }
-    header { display:flex; justify-content:space-between; align-items:center; padding:25px; }
-    .title { font-size:32px; font-weight:700; }
-    #tool-search { width:280px; padding:10px; border-radius:6px; border:none; outline:none; }
-    .tools-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:25px; padding:40px; max-width:900px; margin:auto; }
-    .tool-card { background:#ffffff12; border:1px solid #ffffff22; padding:25px; border-radius:12px; text-align:center; cursor:pointer; transition:.3s; }
-    .tool-card:hover { background:#16a34a; transform:translateY(-4px); }
-    .tool-title { font-size:18px; font-weight:600; margin-bottom:6px; }
-    .tool-sub { font-size:13px; opacity:.8; }
-    #suggest { background:white; color:black; position:absolute; width:280px; border-radius:6px; display:none; }
-    #suggest div { padding:8px; cursor:pointer; }
-    #suggest div:hover { background:#eee; }
-  </style>
-
+.search-wrap {
+  text-align:center; margin-top:10px;
+}
+.search-input {
+  width:85%; max-width:450px;
+  background:rgba(255,255,255,.12);
+  border:none; outline:none;
+  padding:12px 16px; border-radius:8px;
+  color:white; font-size:16px;
+  backdrop-filter: blur(8px);
+}
+.tools-grid {
+  margin:40px auto; width:90%; max-width:1100px;
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:25px;
+}
+.tool-card {
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(10px);
+  border-radius:14px;
+  padding:25px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.15);
+  cursor:pointer; transition:.2s;
+}
+.tool-card:hover {
+  transform:translateY(-5px);
+  background:rgba(255,255,255,.15);
+}
+.tool-icon {
+  font-size:32px; margin-bottom:12px;
+  color:#7df0b4;
+}
+.footer {
+  text-align:center; padding:40px 0; font-size:13px;
+  opacity:.5;
+}
+</style>
 </head>
+
 <body>
 
-<header>
-  <div class="title">🧰 أدوات PDF مجانية</div>
+<div class="header">
+  <div class="title">أدوات PDF مجانية</div>
+  <button class="lang-btn" id="langToggle">EN</button>
+</div>
 
-  <div style="position:relative;">
-    <input id="tool-search" type="text" placeholder="ابحث عن أداة (مثال: دمج، تقسيم)">
-    <div id="suggest"></div>
-  </div>
-</header>
+<div class="search-wrap">
+  <input type="text" id="searchBox" class="search-input" placeholder="ابحث عن أداة مثل: دمج، ضغط، تقسيم ...">
+</div>
 
-<section class="tools-grid" id="tools"></section>
+<div class="tools-grid" id="toolsList">
+  <!-- الأدوات يتم توليدها تلقائياً -->
+</div>
+
+<div class="footer">© 2025 أدوات PDF — جميع الحقوق محفوظة</div>
 
 <script>
+// قائمة الأدوات
 const tools = [
-  { name:"دمج ملفات PDF", sub:"Merge PDF", link:"tools/merge-pdf/index.html" },
-  { name:"تقسيم PDF", sub:"Split PDF", link:"tools/split-pdf/index.html" },
-  { name:"ضغط PDF", sub:"Compress PDF", link:"tools/compress-pdf/index.html" },
-  { name:"PDF إلى صور", sub:"PDF → Images", link:"tools/pdf-to-img/index.html" },
-  { name:"صور إلى PDF", sub:"Images → PDF", link:"tools/img-to-pdf/index.html" },
-  { name:"حذف صفحات PDF", sub:"Remove Pages", link:"tools/remove-pages/index.html" }
+  { name_ar:"دمج ملفات PDF", name_en:"Merge PDF", icon:"fa-layer-group", link:"merge.html" },
+  { name_ar:"ضغط ملفات PDF", name_en:"Compress PDF", icon:"fa-compress", link:"compress.html" },
+  { name_ar:"تقسيم ملفات PDF", name_en:"Split PDF", icon:"fa-scissors", link:"split.html" },
+  { name_ar:"تحويل PDF إلى صور", name_en:"PDF to Images", icon:"fa-file-image", link:"pdf2img.html" },
+  { name_ar:"تحويل صور إلى PDF", name_en:"Images to PDF", icon:"fa-image", link:"img2pdf.html" }
 ];
 
-const toolsBox = document.getElementById("tools");
-const suggestBox = document.getElementById("suggest");
-const search = document.getElementById("tool-search");
+const t = document.getElementById("toolsList");
+const search = document.getElementById("searchBox");
+const langBtn = document.getElementById("langToggle");
+let isArabic = true;
 
-function render(list){
-  toolsBox.innerHTML = list.map(t => `
-    <div class="tool-card" onclick="window.open('${t.link}', '_blank')">
-      <div class="tool-title">${t.name}</div>
-      <div class="tool-sub">${t.sub}</div>
-    </div>
-  `).join("");
+// عرض الأدوات
+function renderTools() {
+  t.innerHTML = "";
+  tools.forEach(tool=>{
+    const card = document.createElement("a");
+    card.className="tool-card";
+    card.href = tool.link;
+    card.target="_blank";
+    card.innerHTML = `
+      <i class="fa ${tool.icon} tool-icon"></i>
+      <h3>${isArabic ? tool.name_ar : tool.name_en}</h3>
+    `;
+    t.appendChild(card);
+  });
 }
+renderTools();
 
-render(tools);
+// البحث الذكي
+search.addEventListener("input", ()=>{
+  const q = search.value.trim().toLowerCase();
+  document.querySelectorAll(".tool-card").forEach(card=>{
+    card.style.display = card.innerText.toLowerCase().includes(q) ? "block" : "none";
+  });
+});
 
-search.oninput = () => {
-  const v = search.value.trim();
-  if(v === "") { suggestBox.style.display="none"; render(tools); return; }
-
-  const filtered = tools.filter(t => t.name.includes(v));
-  suggestBox.innerHTML = filtered.map(t => `<div onclick="select('${t.name}')">${t.name}</div>`).join("");
-  suggestBox.style.display = filtered.length ? "block":"none";
+// تبديل اللغة
+langBtn.onclick = ()=>{
+  isArabic = !isArabic;
+  document.body.dir = isArabic ? "rtl" : "ltr";
+  langBtn.innerText = isArabic ? "EN" : "AR";
+  renderTools();
 };
-
-function select(name){
-  search.value = name;
-  suggestBox.style.display="none";
-  render(tools.filter(t => t.name.includes(name)));
-}
 </script>
 
 </body>
