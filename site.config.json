@@ -1,10 +1,10 @@
 {
-  "site_name_ar": "مدونة تلقائية",
-  "site_name_en": "Auto Blog",
+  "site_name_ar": "أدوات PDF مجانية",
+  "site_name_en": "Free PDF Tools",
   "site_url": "https://<your-username>.github.io/<repo-name>/",
-  "site_description_ar": "موقع محتوى آلي يحدّث نفسه من مصادر مفتوحة مع تلخيصات قصيرة وروابط للمصدر.",
-  "site_description_en": "Automated content site that refreshes itself from open sources with short summaries and source links.",
-  "adsense_publisher_id": "ca-pub-XXXXXXXXXXXXXXXX",
+  "site_description_ar": "دمج، ضغط، تقسيم وتحويل ملفات PDF مجاناً بدون برامج، بسهولة وسرعة.",
+  "site_description_en": "Merge, compress, split and convert PDF files for free, no software needed.",
+  "adsense_publisher_id": "ca-pub-8156565244927058",
   "language_default": "ar",
   "theme_color": "#0f172a",
   "accent_color": "#16a34a"
