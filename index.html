@@ -3,220 +3,127 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PDF Hero — أدوات PDF وصور</title>
+  <title>PDF Studio — أدوات PDF وصور</title>
   <style>
     :root{
       --bg:#f7f8fb;
       --card:#ffffff;
       --text:#0f172a;
       --muted:#64748b;
-      --accent:#e53935; /* أحمر قريب من iLovePDF */
+      --accent:#e53935;
       --accent-2:#ff6a3d;
       --ring:#e5e7eb;
       --radius:18px;
       --shadow:0 10px 25px rgba(15,23,42,.06);
     }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif}
-    a{color:inherit;text-decoration:none}
+    body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif}
+    a{text-decoration:none}
     .container{max-width:1160px;margin:0 auto;padding:16px}
-    /* Header */
-    .header{
-      position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--ring);
-    }
-    .header-inner{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
-    .brand{display:flex;align-items:center;gap:12px}
-    .brand .logo{
-      display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;font-weight:700
-    }
-    .brand h1{font-size:20px;line-height:1.2;margin:0}
-    .brand small{display:block;color:var(--muted);font-weight:400}
-    .actions{display:flex;gap:8px;align-items:center}
-    .btn{
-      background:var(--accent);border:none;color:#fff;padding:10px 16px;border-radius:12px;cursor:pointer;font-weight:600
-    }
-    .btn.secondary{background:#111827;color:#fff}
-    .btn.ghost{background:#fff;border:1px solid var(--ring);color:var(--text)}
-    /* Hero */
-    .hero{padding:40px 0 10px}
-    .hero h2{margin:0 0 8px;font-size:28px}
+
+    .header{background:#fff;border-bottom:1px solid var(--ring)}
+    .header-inner{display:flex;align-items:center;justify-content:center;padding:14px 0}
+    .brand h1{font-size:22px;font-weight:800;margin:0}
+
+    .hero{text-align:center;padding:46px 0 18px}
+    .hero h2{margin:0 0 10px;font-size:30px}
     .hero p{margin:0;color:var(--muted)}
-    .searchbar{display:flex;gap:10px;margin-top:18px;position:relative}
+
+    .searchbar{max-width:580px;margin:22px auto;position:relative}
     .searchbar input{
-      flex:1;background:#fff;border:1px solid var(--ring);padding:14px 16px;border-radius:14px;font-size:16px;outline:none
+      width:100%;padding:16px;border-radius:14px;border:1px solid var(--ring);
+      font-size:17px;background:#fff;
     }
     .suggest{
-      position:absolute;top:100%;right:0;left:0;background:#fff;border:1px solid var(--ring);
-      border-radius:12px;margin-top:6px;box-shadow:var(--shadow);overflow:hidden;display:none
+      position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--ring);
+      border-radius:12px;margin-top:6px;box-shadow:var(--shadow);display:none;
+      overflow:hidden;
     }
     .suggest.show{display:block}
     .suggest div{padding:12px 14px;cursor:pointer}
     .suggest div:hover{background:#f3f4f6}
-    /* Tools grid */
-    .tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;margin:24px 0 48px}
+
+    .tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;margin:32px 0 50px}
     .card{
-      background:var(--card);border:1px solid var(--ring);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);
-      transition:transform .2s ease, box-shadow .2s ease;display:flex;flex-direction:column;gap:8px;min-height:160px
+      background:#fff;border:1px solid var(--ring);border-radius:var(--radius);
+      padding:20px;box-shadow:var(--shadow);transition:.25s;
+      display:flex;flex-direction:column;gap:8px;text-align:center;
     }
-    .card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(15,23,42,.08)}
-    .icon{
-      width:46px;height:46px;border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:800;
-      background:linear-gradient(135deg,var(--accent),var(--accent-2))
-    }
-    .card h3{margin:8px 0 4px 0;font-size:18px}
-    .card p{margin:0;color:var(--muted)}
-    .card .open{margin-top:auto;align-self:flex-start}
-    .tag{font-size:12px;color:#94a3b8}
-    /* Footer */
-    .footer{color:#94a3b8;border-top:1px solid var(--ring);background:#fff}
-    .footer .container{padding:22px 16px}
-    /* Responsive */
-    @media (max-width:640px){
-      .brand h1{font-size:18px}
-      .hero h2{font-size:22px}
-    }
+    .card:hover{transform:translateY(-4px)}
+    .card h3{margin:6px 0}
+    .card p{color:var(--muted);margin:0}
+    .btn{background:var(--accent);color:#fff;padding:9px 12px;border-radius:10px;margin-top:auto;display:inline-block}
+
+    .footer{text-align:center;color:#94a3b8;border-top:1px solid var(--ring);padding:18px 0;background:#fff}
   </style>
 </head>
 <body>
-  <!-- HEADER -->
-  <header class="header">
-    <div class="container header-inner">
-      <div class="brand">
-        <div class="logo">❤</div>
-        <div>
-          <h1 id="site-title">PDF Hero</h1>
-          <small id="site-desc">أدوات PDF وصور سهلة وسريعة</small>
-        </div>
-      </div>
-      <div class="actions">
-        <button id="lang" class="btn ghost">EN</button>
-        <a href="https://github.com" target="_blank" class="btn secondary">GitHub</a>
-      </div>
+
+<header class="header">
+  <div class="container header-inner">
+    <div class="brand"><h1>PDF Studio</h1></div>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <h2 id="hero-title">كل أدوات PDF التي تحتاجها في مكان واحد</h2>
+    <p id="hero-desc">ادمج، قسّم، اضغط وحوّل ملفات PDF والصور — مباشرة من المتصفح.</p>
+
+    <div class="searchbar">
+      <input id="search" placeholder="ابحث عن أداة… مثال: دمج، تقسيم، صور → PDF" />
+      <div id="suggest" class="suggest"></div>
     </div>
-  </header>
+  </section>
 
-  <!-- HERO -->
-  <main class="container">
-    <section class="hero">
-      <h2 id="hero-title">كل أدوات PDF التي تحتاجها في مكان واحد</h2>
-      <p id="hero-desc">ادمج، قسّم، اضغط وحوّل ملفات PDF والصور — مباشرة من المتصفح.</p>
-      <div class="searchbar">
-        <input id="search" placeholder="ابحث عن أداة… مثال: دمج، تقسيم، صور → PDF" />
-        <div id="suggest" class="suggest"></div>
-      </div>
-    </section>
+  <section id="tools" class="tools"></section>
+</main>
 
-    <!-- TOOLS -->
-    <section id="tools" class="tools"></section>
-  </main>
+<footer class="footer">
+  <div class="container">
+    <span id="foot">© <span id="year"></span> PDF Studio — جميع الحقوق محفوظة.</span>
+  </div>
+</footer>
 
-  <footer class="footer">
-    <div class="container">
-      <span id="foot">© <span id="year"></span> PDF Hero — جميع الحقوق محفوظة.</span>
+<script>
+const tools = [
+  {key:'merge', ar:'دمج ملفات PDF', desc:'ادمج عدة ملفات في ملف واحد.', href:'tools/merge.html'},
+  {key:'split', ar:'تقسيم ملف PDF', desc:'قسّم ملف PDF إلى أجزاء.', href:'tools/split.html'},
+  {key:'compress', ar:'ضغط ملفات PDF', desc:'تقليل حجم ملف PDF.', href:'tools/compress.html'},
+  {key:'remove', ar:'حذف صفحات PDF', desc:'احذف صفحات محددة من PDF.', href:'tools/remove.html'},
+  {key:'rotate', ar:'تدوير صفحات PDF', desc:'تدوير الصفحات 90°/180°/270°.', href:'tools/rotate.html'},
+  {key:'img2pdf', ar:'تحويل صور إلى PDF', desc:'دمج صور في PDF.', href:'tools/img-to-pdf.html'},
+  {key:'pdf2img', ar:'تحويل PDF إلى صور', desc:'استخراج صفحات كصور.', href:'tools/pdf-to-img.html'},
+];
+
+function render(list){
+  document.getElementById('tools').innerHTML = list.map(t=>`
+    <div class="card">
+      <h3>${t.ar}</h3>
+      <p>${t.desc}</p>
+      <a class="btn" href="${t.href}" target="_blank">فتح</a>
     </div>
-  </footer>
+  `).join('');
+}
+render(tools);
 
-  <script>
-  // ==== بيانات الأدوات (بدّل الروابط إلى صفحات أدواتك الفعلية عند الحاجة) ====
-  const tools = [
-    // PDF
-    {key:'merge',   tags:['pdf','دمج','merge'],    ar:{name:'دمج ملفات PDF',desc:'ادمج عدة ملفات في ملف واحد بسهولة.'}, en:{name:'Merge PDF',desc:'Combine multiple PDF files into one.'}, href:'tools/merge.html'},
-    {key:'split',   tags:['pdf','تقسيم','split'],  ar:{name:'تقسيم ملف PDF',desc:'قسّم ملف PDF باستخراج صفحات أو نطاق.'}, en:{name:'Split PDF',desc:'Split a PDF by pages or range.'},      href:'tools/split.html'},
-    {key:'compress',tags:['pdf','ضغط','compress'],ar:{name:'ضغط ملفات PDF',desc:'قلّل حجم الملف مع الحفاظ على الجودة.'}, en:{name:'Compress PDF',desc:'Reduce file size while keeping quality.'}, href:'tools/compress.html'},
-    {key:'remove',  tags:['pdf','حذف','remove'],  ar:{name:'حذف صفحات PDF',desc:'احذف صفحات محددة من ملف PDF.'}, en:{name:'Remove PDF pages',desc:'Delete specific pages from a PDF.'}, href:'tools/remove.html'},
-    {key:'rotate',  tags:['pdf','تدوير','rotate'],ar:{name:'تدوير صفحات PDF',desc:'دوّر كل الصفحات أو بعضها 90°/180°/270°.'}, en:{name:'Rotate PDF',desc:'Rotate pages 90°/180°/270°.'}, href:'tools/rotate.html'},
+document.getElementById('year').textContent = new Date().getFullYear();
+const search = document.getElementById('search');
+const suggest = document.getElementById('suggest');
 
-    // Images
-    {key:'img2pdf', tags:['img','صور','image','تحويل'], ar:{name:'تحويل صور إلى PDF',desc:'ادمج صورًا متعددة في ملف PDF.'}, en:{name:'Images to PDF',desc:'Convert multiple images into a single PDF.'}, href:'tools/img-to-pdf.html'},
-    {key:'pdf2img', tags:['img','صور','image','تحويل'], ar:{name:'تحويل PDF إلى صور',desc:'حوّل صفحات PDF إلى صور (PNG/JPG).'}, en:{name:'PDF to Images',desc:'Export PDF pages to images (PNG/JPG).'}, href:'tools/pdf-to-img.html'}
-  ];
+search.oninput = ()=>{
+  let q = search.value.trim().toLowerCase();
+  let match = tools.filter(t=>t.ar.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q));
+  render(match.length?match:tools);
+  if(q && match.length){
+    suggest.innerHTML = match.map(t=>`<div data-h="${t.href}">${t.ar}</div>`).join('');
+    suggest.classList.add('show');
+  } else suggest.classList.remove('show');
+};
+suggest.onclick = e=>{
+  if(e.target.dataset.h) window.open(e.target.dataset.h);
+};
+</script>
 
-  // ==== ترجمة واجهة ====
-  const i18n = {
-    ar:{
-      siteTitle:'PDF Hero', siteDesc:'أدوات PDF وصور سهلة وسريعة',
-      heroTitle:'كل أدوات PDF التي تحتاجها في مكان واحد',
-      heroDesc:'ادمج، قسّم، اضغط وحوّل ملفات PDF والصور — مباشرة من المتصفح.',
-      placeholder:'ابحث عن أداة… مثال: دمج، تقسيم، صور → PDF',
-      footer:y=>`© ${y} PDF Hero — جميع الحقوق محفوظة.`, lang:'EN'
-    },
-    en:{
-      siteTitle:'PDF Hero', siteDesc:'Fast & Easy PDF and Image Tools',
-      heroTitle:'All the PDF tools you need in one place',
-      heroDesc:'Merge, split, compress and convert PDF & images — right in your browser.',
-      placeholder:'Search a tool… e.g. merge, split, images → PDF',
-      footer:y=>`© ${y} PDF Hero — All rights reserved.`, lang:'AR'
-    }
-  };
-
-  let current='ar';
-  const $ = sel => document.querySelector(sel);
-  const $$ = sel => document.querySelectorAll(sel);
-
-  function renderCards(lang='ar', filter=''){
-    const grid = $('#tools');
-    const q = (filter||'').toLowerCase();
-    const items = tools.filter(t=> (t.tags.join(' ') + ' ' + t.ar.name + ' ' + t.en.name).toLowerCase().includes(q));
-    grid.innerHTML = items.map(t => `
-      <article class="card">
-        <div class="icon">★</div>
-        <h3>${t[lang].name}</h3>
-        <p>${t[lang].desc}</p>
-        <a class="btn open" href="${t.href}" target="_blank" rel="noopener">${lang==='ar'?'فتح الأداة':'Open tool'}</a>
-      </article>`).join('');
-  }
-
-  function applyLang(lang='ar'){
-    current = lang;
-    document.documentElement.lang = lang;
-    document.documentElement.dir  = (lang==='ar')?'rtl':'ltr';
-    $('#site-title').textContent = i18n[lang].siteTitle;
-    $('#site-desc').textContent  = i18n[lang].siteDesc;
-    $('#hero-title').textContent = i18n[lang].heroTitle;
-    $('#hero-desc').textContent  = i18n[lang].heroDesc;
-    $('#search').placeholder     = i18n[lang].placeholder;
-    $('#lang').textContent       = i18n[lang].lang;
-    $('#foot').textContent       = i18n[lang].footer(new Date().getFullYear());
-    renderCards(lang,$('#search').value);
-  }
-
-  function renderSuggest(list, lang='ar'){
-    const wrap = $('#suggest');
-    if(!list.length){ wrap.classList.remove('show'); wrap.innerHTML=''; return; }
-    wrap.innerHTML = list.slice(0,8).map(t=>`<div data-key="${t.key}">${t[lang].name}</div>`).join('');
-    wrap.classList.add('show');
-    wrap.querySelectorAll('div').forEach(d=>{
-      d.addEventListener('click', ()=>{
-        const item = tools.find(x=>x.key===d.dataset.key);
-        if(item) window.open(item.href,'_blank');
-      });
-    });
-    document.addEventListener('click', (e)=>{ if(!wrap.contains(e.target) && e.target!==$('#search')) wrap.classList.remove('show'); }, {once:true});
-  }
-
-  // === Events ===
-  document.addEventListener('DOMContentLoaded', ()=>{
-    $('#year').textContent = new Date().getFullYear();
-    applyLang('ar');
-
-    $('#lang').addEventListener('click', ()=> applyLang(current==='ar'?'en':'ar'));
-    $('#search').addEventListener('input', (e)=>{
-      const val = e.target.value.trim();
-      renderCards(current, val);
-      const q = val.toLowerCase();
-      const matches = tools.filter(t=> (t.tags.join(' ') + ' ' + t.ar.name + ' ' + t.en.name).toLowerCase().includes(q));
-      renderSuggest(matches, current);
-    });
-    $('#search').addEventListener('keydown',(e)=>{
-      if(e.key==='Enter'){
-        const val = e.target.value.trim().toLowerCase();
-        const match = tools.find(t=> (t.tags.join(' ') + ' ' + t.ar.name + ' ' + t.en.name).toLowerCase().includes(val));
-        if(match) window.open(match.href,'_blank');
-      }
-    });
-
-    renderCards('ar','');
-  });
-  </script>
 </body>
 </html>
