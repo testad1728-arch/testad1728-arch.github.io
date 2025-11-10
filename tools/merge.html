@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>دمج ملفات PDF | Free PDF Tools</title>
+<meta name="description" content="ادمج عدة ملفات PDF داخل المتصفح بدون رفع ملفات للخادم." />
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+  <main class="container">
+    <a href="../index.html" target="_blank" rel="noopener">↗ الصفحة الرئيسية (تبويب جديد)</a>
+    <article class="card" style="margin-top:12px">
+      <h1>دمج ملفات PDF</h1>
+      <p class="muted">اختَر ملفين PDF أو أكثر ثم اضغط دمج.</p>
+
+      <div class="card">
+        <label class="btn" for="file-input">اختيار الملفات</label>
+        <input type="file" id="file-input" accept="application/pdf" multiple hidden>
+        <div id="list" class="muted" style="margin-top:8px"></div>
+        <button id="merge-btn" class="btn" disabled>دمج الملفات</button>
+        <a id="download" style="margin-top:10px; display:none">تحميل الملف النهائي</a>
+      </div>
+    </article>
+  </main>
+
+<script type="module">
+import { PDFDocument } from "https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.esm.js";
+const input = document.getElementById('file-input');
+const list = document.getElementById('list');
+const btn = document.getElementById('merge-btn');
+const dl = document.getElementById('download');
+let files = [];
+
+input.addEventListener('change', () => { files = [...input.files]; renderList(); btn.disabled = files.length < 2; });
+function renderList(){ list.textContent = files.map(f => f.name).join(' • ') || 'لم يتم اختيار ملفات'; }
+
+btn.addEventListener('click', async () => {
+  const merged = await PDFDocument.create();
+  for (const f of files) { const buf = await f.arrayBuffer(); const pdf = await PDFDocument.load(buf); const pages = await merged.copyPages(pdf, pdf.getPageIndices()); pages.forEach(p => merged.addPage(p)); }
+  const bytes = await merged.save();
+  const blob = new Blob([bytes], { type: "application/pdf" });
+  const url = URL.createObjectURL(blob);
+  dl.href = url; dl.download = "merged.pdf"; dl.style.display = "inline-block"; dl.textContent = "تحميل الملف النهائي";
+});
+</script>
+</body>
+</html>

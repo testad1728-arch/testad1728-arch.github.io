@@ -1,9 +1,9 @@
 {
   "site_name_ar": "أدوات PDF مجانية",
   "site_name_en": "Free PDF Tools",
-  "site_url": "https://testad1728-arch.github.io/",
-  "site_description_ar": "دمج، ضغط، تقسيم وتحويل ملفات PDF مجاناً بدون برامج، بسهولة وسرعة.",
-  "site_description_en": "Merge, compress, split and convert PDF files for free, no software needed.",
+  "site_url": "https://<your-username>.github.io/<repo-name>/",
+  "site_description_ar": "دمج، تقسيم، وتحويل ملفات PDF مجاناً بدون برامج، بسهولة وسرعة.",
+  "site_description_en": "Merge, split, and convert PDF files for free—no software needed.",
   "adsense_publisher_id": "ca-pub-8156565244927058",
   "language_default": "ar",
   "theme_color": "#0f172a",

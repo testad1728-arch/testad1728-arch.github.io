@@ -1,0 +1,31 @@
+[
+  {
+    "slug": "merge",
+    "title_ar": "دمج ملفات PDF",
+    "title_en": "Merge PDF",
+    "desc_ar": "ادمج عدة ملفات PDF في ملف واحد بسهولة، داخل المتصفح.",
+    "desc_en": "Merge multiple PDFs into a single file, all in your browser.",
+    "path": "tools/merge.html",
+    "tags": [
+      "دمج",
+      "merge",
+      "combine",
+      "pdf"
+    ]
+  },
+  {
+    "slug": "split",
+    "title_ar": "تقسيم ملف PDF",
+    "title_en": "Split PDF",
+    "desc_ar": "قسّم ملف PDF إلى صفحات منفصلة أو استخرج نطاق صفحات.",
+    "desc_en": "Split a PDF into separate files or extract a page range.",
+    "path": "tools/split.html",
+    "tags": [
+      "تقسيم",
+      "split",
+      "pages",
+      "extract",
+      "pdf"
+    ]
+  }
+]
