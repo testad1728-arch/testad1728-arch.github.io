@@ -1,137 +1,44 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>أدوات PDF مجانية</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-body {
-  margin:0; padding:0;
-  background:#0c0f14;
-  font-family: 'Tahoma', sans-serif;
-  color:white;
-}
-.header {
-  display:flex; justify-content:space-between; align-items:center;
-  padding:25px 40px;
-}
-.title {
-  font-size:28px; font-weight:700;
-}
-.lang-btn {
-  background:rgba(255,255,255,.12);
-  border:none; color:white;
-  padding:8px 18px; border-radius:6px;
-  cursor:pointer; transition:.2s;
-}
-.lang-btn:hover { background:rgba(255,255,255,.25); }
-
-.search-wrap {
-  text-align:center; margin-top:10px;
-}
-.search-input {
-  width:85%; max-width:450px;
-  background:rgba(255,255,255,.12);
-  border:none; outline:none;
-  padding:12px 16px; border-radius:8px;
-  color:white; font-size:16px;
-  backdrop-filter: blur(8px);
-}
-.tools-grid {
-  margin:40px auto; width:90%; max-width:1100px;
-  display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-  gap:25px;
-}
-.tool-card {
-  background:rgba(255,255,255,.08);
-  backdrop-filter:blur(10px);
-  border-radius:14px;
-  padding:25px;
-  text-align:center;
-  border:1px solid rgba(255,255,255,.15);
-  cursor:pointer; transition:.2s;
-}
-.tool-card:hover {
-  transform:translateY(-5px);
-  background:rgba(255,255,255,.15);
-}
-.tool-icon {
-  font-size:32px; margin-bottom:12px;
-  color:#7df0b4;
-}
-.footer {
-  text-align:center; padding:40px 0; font-size:13px;
-  opacity:.5;
-}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>أدوات PDF مجانية</title>
+  <meta name="description" content="دمج، ضغط، تقسيم وتحويل ملفات PDF مجاناً بدون برامج." />
+  <link rel="stylesheet" href="assets/style.css" />
 </head>
-
 <body>
+  <header class="header">
+    <div class="container">
+      <h1 class="logo">PDF<span class="accent">-Tools</span></h1>
+      <nav class="nav">
+        <a href="#">الرئيسية</a>
+        <a href="#">الأدوات</a>
+        <a href="#">حول</a>
+      </nav>
+    </div>
+  </header>
 
-<div class="header">
-  <div class="title">أدوات PDF مجانية</div>
-  <button class="lang-btn" id="langToggle">EN</button>
-</div>
+  <main class="container main-content">
+    <section class="hero">
+      <h2>إدارة ملفات PDF بكل سهولة</h2>
+      <p>ادمج، قسم، ضغط، وحول ملفات PDF مجانا مباشرة من المتصفح.</p>
+      <div class="search-box">
+        <input type="text" id="tool-search" placeholder="ابحث عن أداة …" />
+      </div>
+    </section>
 
-<div class="search-wrap">
-  <input type="text" id="searchBox" class="search-input" placeholder="ابحث عن أداة مثل: دمج، ضغط، تقسيم ...">
-</div>
+    <section class="tools-grid" id="tools">
+      <!-- البطاقات تُضاف ديناميكياً بواسطة JS -->
+    </section>
+  </main>
 
-<div class="tools-grid" id="toolsList">
-  <!-- الأدوات يتم توليدها تلقائياً -->
-</div>
+  <footer class="footer">
+    <div class="container">
+      <p>© 2025 أدوات PDF مجانية — جميع الحقوق محفوظة.</p>
+    </div>
+  </footer>
 
-<div class="footer">© 2025 أدوات PDF — جميع الحقوق محفوظة</div>
-
-<script>
-// قائمة الأدوات
-const tools = [
-  { name_ar:"دمج ملفات PDF", name_en:"Merge PDF", icon:"fa-layer-group", link:"merge.html" },
-  { name_ar:"ضغط ملفات PDF", name_en:"Compress PDF", icon:"fa-compress", link:"compress.html" },
-  { name_ar:"تقسيم ملفات PDF", name_en:"Split PDF", icon:"fa-scissors", link:"split.html" },
-  { name_ar:"تحويل PDF إلى صور", name_en:"PDF to Images", icon:"fa-file-image", link:"pdf2img.html" },
-  { name_ar:"تحويل صور إلى PDF", name_en:"Images to PDF", icon:"fa-image", link:"img2pdf.html" }
-];
-
-const t = document.getElementById("toolsList");
-const search = document.getElementById("searchBox");
-const langBtn = document.getElementById("langToggle");
-let isArabic = true;
-
-// عرض الأدوات
-function renderTools() {
-  t.innerHTML = "";
-  tools.forEach(tool=>{
-    const card = document.createElement("a");
-    card.className="tool-card";
-    card.href = tool.link;
-    card.target="_blank";
-    card.innerHTML = `
-      <i class="fa ${tool.icon} tool-icon"></i>
-      <h3>${isArabic ? tool.name_ar : tool.name_en}</h3>
-    `;
-    t.appendChild(card);
-  });
-}
-renderTools();
-
-// البحث الذكي
-search.addEventListener("input", ()=>{
-  const q = search.value.trim().toLowerCase();
-  document.querySelectorAll(".tool-card").forEach(card=>{
-    card.style.display = card.innerText.toLowerCase().includes(q) ? "block" : "none";
-  });
-});
-
-// تبديل اللغة
-langBtn.onclick = ()=>{
-  isArabic = !isArabic;
-  document.body.dir = isArabic ? "rtl" : "ltr";
-  langBtn.innerText = isArabic ? "EN" : "AR";
-  renderTools();
-};
-</script>
-
+  <script src="assets/app.js"></script>
 </body>
 </html>
