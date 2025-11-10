@@ -5,9 +5,6 @@
 <title>دمج ملفات PDF</title>
 <meta name="description" content="دمج عدة ملفات PDF في ملف واحد بسهولة وبدون برامج." />
 
-<!-- هذا يجعل كل الروابط تفتح في تبويب جديد -->
-<base target="_blank">
-
 <style>
 body {
   font-family: sans-serif;
@@ -46,7 +43,12 @@ button {
   margin-top:20px;
 }
 button:disabled { background:#ccc; cursor:not-allowed; }
-#download-link { display:none; margin-top:20px; color:#16a34a; font-size:18px; }
+#download-link {
+  display:none;
+  margin-top:20px;
+  color:#16a34a;
+  font-size:18px;
+}
 </style>
 </head>
 <body>
@@ -63,9 +65,8 @@ button:disabled { background:#ccc; cursor:not-allowed; }
 <a id="download-link">تحميل الملف النهائي</a>
 </div>
 
-<!-- سكربت يجب أن يكون نوعه module -->
 <script type="module">
-import { PDFDocument } from "https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.esm.js";
+import { PDFDocument } from "https://unpkg.com/pdf-lib/dist/pdf-lib.esm.js";
 
 const dropZone = document.getElementById("drop-zone");
 const fileInput = document.getElementById("file-input");
